@@ -1,4 +1,4 @@
-const stations = [
+export const stations = [
   { taxi: true, x: 1717, y: 103, taxiTo: [1, 7] },
   { subway: true, taxi: true, bus: true, x: 1628, y: 179, taxiTo: [0, 2, 4, 7], metroTo: [12, 30], onibusTo: [12] },
   { taxi: true, x: 1710, y: 266, taxiTo: [1, 3] },
@@ -97,6 +97,4 @@ const stations = [
   { bus: true, taxi: true, x: 779, y: 326, taxiTo: [62, 63, 65, 68], onibusTo: [70, 35, 34, 80] },
   { taxi: true, x: 379, y: 526, taxiTo: [72, 86, 92, 89] },
   { taxi: true, x: 1444, y: 30, taxiTo: [7, 31] },
-];
-
-module.exports = { stations }
+]

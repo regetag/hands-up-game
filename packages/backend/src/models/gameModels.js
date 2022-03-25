@@ -1,10 +1,11 @@
-const { stations } = require('./stationModel')
-class Player {
+import { stations } from "./stationModel.js"
+
+export class Player {
   constructor(id, color, position) {
     this.id = id
     this.color = color
     this.position = position
-    this.type = 'police'
+    this.type = "police"
     this.hidden = false
   }
 }
@@ -12,15 +13,15 @@ class Player {
 class Thief extends Player {
   constructor(id, color, position) {
     super(id, color, position)
-    this.type = 'thief'
+    this.type = "thief"
     this.hidden = true
   }
 }
 
-class Game {
+export class Game {
   constructor() {
     this.players = []
-    this.thief = ''
+    this.thief = ""
     this.stations = stations
     this.currentPlayer = 0
     this.round = 20
@@ -29,9 +30,9 @@ class Game {
 
   finishGame() {
     if (this.round <= 0) {
-      return 'Thief Wins'
+      return "Thief Wins"
     } else if (this.thiefWasArrested()) {
-      return 'Police Wins'
+      return "Police Wins"
     } else {
       return false
     }
@@ -41,7 +42,7 @@ class Game {
     let thiefPosition
 
     const playersPosition = this.players.reduce((acc, { position, type }) => {
-      if (type === 'thief') {
+      if (type === "thief") {
         thiefPosition = position
       } else {
         acc.push(position)
@@ -71,7 +72,7 @@ class Game {
     const position = this.getRandomPosition()
     let player
 
-    if (type === 'thief') {
+    if (type === "thief") {
       player = new Thief(id, color, position)
       this.thief = player
       this.currentPlayer = this.players.length
@@ -103,6 +104,3 @@ class Game {
   }
 
 }
-
-
-module.exports = { Player, Game }

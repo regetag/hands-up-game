@@ -1,0 +1,13 @@
+{
+  //Bracket Color
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": "active",
+  //Bracket Color
+
+  "editor.tabSize": 2,
+  "files.eol": "\n",
+  //ESLINT force format
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}

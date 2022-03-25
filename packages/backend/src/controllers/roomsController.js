@@ -1,5 +1,5 @@
-const { Room, User } = require('../models/roomModels')
-const { Game } = require('../models/gameModels')
+import { Room, User } from "../models/roomModels.js"
+// import { Game } from "../models/gameModels.js"
 
 const roomsControllers = {
   rooms: {},
@@ -74,4 +74,5 @@ const roomsControllers = {
   }
 
 }
-module.exports = roomsControllers
+
+export default roomsControllers
