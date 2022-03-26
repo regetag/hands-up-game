@@ -1,6 +1,6 @@
-import React, { useContext } from 'react'
-import { GameContext } from '../../Contexts/GameContext'
-import { Container } from './style'
+import React, { useContext } from "react"
+import { GameContext } from "../../Contexts/GameContext"
+import { Container } from "./style"
 
 
 export function GameInfo() {
@@ -13,7 +13,7 @@ export function GameInfo() {
         </div>
       }
       <div>
-        {canIPlay ? 'Sua vez de jogar' : 'É a vez dos seus colegas'}
+        {canIPlay ? "Sua vez de jogar" : "É a vez dos seus colegas"}
       </div>
       <div>
         Round: {round}

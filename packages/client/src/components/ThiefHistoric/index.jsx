@@ -1,6 +1,6 @@
-import React, { useContext, useState } from 'react'
-import { GameContext } from '../../Contexts/GameContext'
-import { Container } from './style'
+import React, { useContext, useState } from "react"
+import { GameContext } from "../../Contexts/GameContext"
+import { Container } from "./style"
 
 
 export function ThiefHistoric() {
@@ -14,7 +14,7 @@ export function ThiefHistoric() {
   return (
     <Container>
       <h3 onClick={toggleListVisibility}
-        className={showList ? 'up' : ''}>
+        className={showList ? "up" : ""}>
         Histórico do ladrão
       </h3>
       {showList && thiefMovements &&

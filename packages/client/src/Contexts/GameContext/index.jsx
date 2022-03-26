@@ -1,49 +1,49 @@
-import React, { createContext, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { io } from 'socket.io-client'
+import React, { createContext, useEffect, useState } from "react"
+import { useParams } from "react-router-dom"
+import { io } from "socket.io-client"
 
 
 const GameContext = createContext()
 
 function GameProvider(props) {
+  const [me, setMe] = useState()
+  const [round, setRound] = useState()
   const [socket, setSocket] = useState()
-  const [room] = useState(useParams().roomId)
-  const [colorsAndTypesAvailable, setColorsAndTypesAvailable] = useState()
-  const [currentPreferences, setCurrentPreferences] = useState()
   const [players, setPlayers] = useState()
   const [stations, setStations] = useState()
-  const [amIReady, setAmIReady] = useState(false)
-  const [areEveryoneReady, setareEveryoneReady] = useState(false)
-  const [me, setMe] = useState()
+  const [room] = useState(useParams().roomId)
   const [canIPlay, setCanIPlay] = useState(false)
+  const [amIReady, setAmIReady] = useState(false)
   const [currentVehicle, setCurrentVehicle] = useState()
   const [thiefMovements, setThiefMovements] = useState([])
-  const [round, setRound] = useState()
+  const [currentPreferences, setCurrentPreferences] = useState()
+  const [areEveryoneReady, setareEveryoneReady] = useState(false)
+  const [colorsAndTypesAvailable, setColorsAndTypesAvailable] = useState()
 
   useEffect(() => {
-    const connection = io('/')
-    connection.on('connect', () => {
+    const connection = io("localhost:3000/")
+    connection.on("connect", () => {
       setSocket(connection)
     })
   }, [])
 
   useEffect(() => {
     if (socket) {
-      socket.emit('join-room', room, (err) => {
+      socket.emit("join-room", room, (err) => {
         if (err) {
           window.location.href = "/"
         }
       })
 
-      socket.on('are-everyone-ready', (areReady) => {
+      socket.on("are-everyone-ready", (areReady) => {
         setareEveryoneReady(areReady)
       })
 
-      socket.on('stations', (stations) => {
+      socket.on("stations", (stations) => {
         setStations(stations)
       })
 
-      socket.on('players-update', (players, currentPlayer, thiefMovements, round, endGame) => {
+      socket.on("players-update", (players, currentPlayer, thiefMovements, round, endGame) => {
         setRound(round)
         setThiefMovements(thiefMovements)
 
@@ -52,7 +52,7 @@ function GameProvider(props) {
         }
         if (endGame) {
           alert(endGame)
-          socket.emit('restart', room)
+          socket.emit("restart", room)
           setAmIReady(false)
         }
 
@@ -66,7 +66,7 @@ function GameProvider(props) {
 
   useEffect(() => {
     if (socket) {
-      socket.on('preferences', (preferences) => {
+      socket.on("preferences", (preferences) => {
         if (currentPreferences) {
           setColorsAndTypesAvailable({
             color: [currentPreferences.color, ...preferences.color],
@@ -79,20 +79,20 @@ function GameProvider(props) {
           setColorsAndTypesAvailable(preferences)
         }
       })
-      return () => { socket.off('preferences') }
+      return () => { socket.off("preferences") }
     }
   }, [socket, currentPreferences])
 
 
   useEffect(() => {
     if (socket && currentPreferences) {
-      socket.emit('player-change-preferences', room, currentPreferences)
+      socket.emit("player-change-preferences", room, currentPreferences)
     }
   }, [socket, currentPreferences])
 
   useEffect(() => {
     if (socket) {
-      socket.emit('am-i-ready', room, amIReady)
+      socket.emit("am-i-ready", room, amIReady)
     }
   }, [room, amIReady])
 

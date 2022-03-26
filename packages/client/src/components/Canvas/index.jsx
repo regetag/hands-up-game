@@ -1,22 +1,22 @@
-import React, { useRef, useEffect, useContext, useState } from 'react'
-import { Container } from './style'
-import { GameContext } from '../../Contexts/GameContext'
-import { ThiefHistoric } from '../ThiefHistoric'
-import backgroundCanvas from '../../assets/images/game-board.jpg'
-import ambienceSound from '../../assets/sounds/ambience0.mp3'
-import policeBeep from '../../assets/sounds/police_beep.mp3'
+import React, { useRef, useEffect, useContext, useState } from "react"
+import { Container } from "./style"
+import { GameContext } from "../../Contexts/GameContext"
+import { ThiefHistoric } from "../ThiefHistoric"
+import backgroundCanvas from "../../assets/images/game-board.jpg"
+import ambienceSound from "../../assets/sounds/ambience0.mp3"
+import policeBeep from "../../assets/sounds/police_beep.mp3"
 
 CanvasRenderingContext2D.prototype.roundRect = function (x, y, width, height, radius) {
-  if (width < 2 * radius) radius = width / 2;
-  if (height < 2 * radius) radius = height / 2;
-  this.beginPath();
-  this.moveTo(x + radius, y);
-  this.arcTo(x + width, y, x + width, y + height, radius);
-  this.arcTo(x + width, y + height, x, y + height, radius);
-  this.arcTo(x, y + height, x, y, radius);
-  this.arcTo(x, y, x + width, y, radius);
-  this.closePath();
-  return this;
+  if (width < 2 * radius) radius = width / 2
+  if (height < 2 * radius) radius = height / 2
+  this.beginPath()
+  this.moveTo(x + radius, y)
+  this.arcTo(x + width, y, x + width, y + height, radius)
+  this.arcTo(x + width, y + height, x, y + height, radius)
+  this.arcTo(x, y + height, x, y, radius)
+  this.arcTo(x, y, x + width, y, radius)
+  this.closePath()
+  return this
 }
 
 export function Canvas(props) {
@@ -27,7 +27,7 @@ export function Canvas(props) {
   const canvasRef = useRef(null)
 
   useEffect(() => {
-    const image = new Image();
+    const image = new Image()
     image.src = backgroundCanvas
     image.onload = function () {
       setCanvasImage(image)
@@ -70,16 +70,16 @@ export function Canvas(props) {
   useEffect(() => {
 
     function drawBusStation(ctx, x, y, available) {
-      ctx.strokeStyle = available ? '#ff0000' : '#e96f6f'
-      ctx.lineWidth = '2'
+      ctx.strokeStyle = available ? "#ff0000" : "#e96f6f"
+      ctx.lineWidth = "2"
       ctx.beginPath()
       ctx.arc((x - .15), (y - .15), 24, 0, 360)
       ctx.stroke()
     }
 
     function drawTaxiStation(ctx, x, y, available) {
-      ctx.strokeStyle = available ? '#000000' : '#929292'
-      ctx.lineWidth = '3'
+      ctx.strokeStyle = available ? "#000000" : "#929292"
+      ctx.lineWidth = "3"
       ctx.beginPath()
       ctx.arc(x, y, 21, 0, 360)
       ctx.stroke()
@@ -87,14 +87,14 @@ export function Canvas(props) {
 
     function drawNumberStation(ctx, x, y, stationId, fillColor, available) {
       ctx.roundRect((x - 23), (y - 12.5), 46, 25, 5)
-      ctx.strokeStyle = available ? '#000000' : '#929292'
-      ctx.lineWidth = '1.5'
-      ctx.fillStyle = fillColor;
-      ctx.fill();
+      ctx.strokeStyle = available ? "#000000" : "#929292"
+      ctx.lineWidth = "1.5"
+      ctx.fillStyle = fillColor
+      ctx.fill()
       ctx.stroke()
-      ctx.font = '600 20px sans-serif'
-      ctx.fillStyle = available ? '#000000' : '#929292'
-      ctx.textAlign = 'center'
+      ctx.font = "600 20px sans-serif"
+      ctx.fillStyle = available ? "#000000" : "#929292"
+      ctx.textAlign = "center"
       ctx.fillText(stationId, x, (y + 6.45))
     }
 
@@ -104,7 +104,7 @@ export function Canvas(props) {
       x *= dimension.w / 1770
       y *= dimension.h / 970
 
-      ctx.fillStyle = '#FFFFFF'
+      ctx.fillStyle = "#FFFFFF"
       ctx.beginPath()
       ctx.arc(x, y, 19, 0, 360)
       ctx.fill()
@@ -114,17 +114,17 @@ export function Canvas(props) {
 
       if (bus) drawBusStation(ctx, x, y, available)
 
-      const fillColorNumberStation = subway ? '#92d9ff' : '#FFFFFF'
+      const fillColorNumberStation = subway ? "#92d9ff" : "#FFFFFF"
       drawNumberStation(ctx, x, y, stationId, fillColorNumberStation, available)
     }
 
     function drawPlayer(ctx, x, y, color) {
       ctx.strokeStyle = color
-      ctx.lineWidth = '6'
+      ctx.lineWidth = "6"
       ctx.beginPath()
       ctx.arc(x, (y - 1), 15, 0, 360)
       ctx.stroke()
-      ctx.lineWidth = '4'
+      ctx.lineWidth = "4"
       ctx.beginPath()
       ctx.arc(x, (y - 1), 28, 0, 360)
       ctx.stroke()
@@ -153,7 +153,7 @@ export function Canvas(props) {
     }
 
     const canvas = canvasRef.current
-    const context = canvas.getContext('2d')
+    const context = canvas.getContext("2d")
     draw(context)
   }, [socket, stations, players, canvasImage, dimension, availableStations])
 
@@ -195,7 +195,7 @@ export function Canvas(props) {
         return player
       }
     })
-    socket.emit('player-change-position', room, newPlayers, currentVehicle)
+    socket.emit("player-change-position", room, newPlayers, currentVehicle)
   }
 
   function handleClick(event) {
@@ -228,9 +228,9 @@ export function Canvas(props) {
   }
 
   useEffect(() => {
-    window.addEventListener('resize', handleResize)
+    window.addEventListener("resize", handleResize)
 
-    return () => window.removeEventListener('resize', handleResize)
+    return () => window.removeEventListener("resize", handleResize)
   }, [])
 
   return (

@@ -1,8 +1,8 @@
-import React, { useContext } from 'react'
+import React, { useContext } from "react"
 // import { GameContext } from '../../Contexts/GameContext'
 // import { ThiefButtons } from '../ThiefButtons'
-import { TransportsButtons } from '../TransportsButtons'
-import { Container } from './style'
+import { TransportsButtons } from "../TransportsButtons"
+import { Container } from "./style"
 
 
 export function GameControls() {

@@ -1,6 +1,6 @@
-import React, { useContext } from 'react'
-import { GameContext } from '../../Contexts/GameContext'
-import { Container } from './style'
+import React, { useContext } from "react"
+import { GameContext } from "../../Contexts/GameContext"
+import { Container } from "./style"
 
 
 export function FormNewPlayer() {
@@ -24,30 +24,26 @@ export function FormNewPlayer() {
 
   function translateColor(color) {
     switch (color) {
-      case 'green':
-        return 'verde'
-        break
-      case 'blue':
-        return 'azul'
-        break
-      case 'red':
-        return 'vermelho'
-        break
-      case 'yellow':
-        return 'amarelo'
-        break
-      case 'black':
-        return 'preto'
-        break
-      default:
-        return
+    case "green":
+      return "verde"
+    case "blue":
+      return "azul"
+    case "red":
+      return "vermelho"
+    case "yellow":
+      return "amarelo"
+    case "black":
+      return "preto"
+    default:
+      return
     }
   }
 
   function translateType(type) {
     const number = type.slice(-1)
-    return type.includes('police') ? `policia ${number}` : 'ladrão'
+    return type.includes("police") ? `policia ${number}` : "ladrão"
   }
+
 
   return (
     <Container onSubmit={toggleAmIReady} className='userPreferences'>

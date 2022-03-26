@@ -1,11 +1,11 @@
-import React from 'react'
-import { Container } from './style'
+
+import { Container } from "./style"
 
 export function NewRoomModal() {
 
   function handleClick() {
     async function createRoom() {
-      const res = await fetch('/rooms/new', { method: 'POST' })
+      const res = await fetch("http://localhost:3000/rooms/new", { method: "POST" })
       const roomId = await res.text()
 
       window.location.href = `./${roomId}`
