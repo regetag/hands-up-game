@@ -12,7 +12,8 @@ export class Room {
     this.game = new Game()
   }
   static idGenerator() {
-    return Date.now().toString(36) + Math.random().toString(36).substring(2)
+    const id = Math.random().toString(32).substring(2)
+    return id.slice(0, 5)
   }
 
   restart(){

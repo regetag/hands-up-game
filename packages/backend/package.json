@@ -8,8 +8,7 @@
     "start_client": "npm start --prefix client",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon .",
-    "start": "node index.js",
-    "postinstall": "npm install --prefix client"
+    "start": "node index.js"
   },
   "author": "",
   "license": "ISC",

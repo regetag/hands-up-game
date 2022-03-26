@@ -4,59 +4,68 @@ import { Room, User } from "../models/roomModels.js"
 const roomsControllers = {
   rooms: {},
   new: function (req, res) {
-    const maxUsers = req.body.maxUsers || 5
+    const { maxUsers } = req.body
     const newRoom = new Room(maxUsers)
     const roomId = Room.idGenerator()
     this.rooms[roomId] = newRoom
-    res.send(roomId)
+    
+    return res.status(201).send(roomId)
   },
 
-  delete: function (req, res) {
-    const idToDelete = req.body.roomId
-    delete this.rooms[idToDelete]
-  },
+  // delete: function (req, res) {
+  //   const idToDelete = req.body.roomId
+  //   delete this.rooms[idToDelete]
+  // },
 
-  hasRoom: function (req, res) {
-    const { roomId } = req.params
-    if (this.rooms[roomId]) {
-      res.send({ exist: true })
-    } else {
-      res.send({ exist: false })
-    }
-  },
+  // hasRoom: function (req, res) {
+  //   const { roomId } = req.params
+  //   if (this.rooms[roomId]) {
+  //     res.send({ exist: true })
+  //   } else {
+  //     res.send({ exist: false })
+  //   }
+  // },
 
   isEveryoneReady: function (roomId) {
-    this.rooms[roomId].isReady = this.rooms[roomId].users.every(({ isReady }) => isReady)
-    return this.rooms[roomId].isReady
+    const roomIdFromRooms = this.rooms[roomId]
+    this.rooms[roomId].isReady = roomIdFromRooms.users.every(({ isReady }) => isReady)
+    return roomIdFromRooms.isReady
   },
 
   addUserRoom: function (roomId, userId) {
+    const roomIdFromRooms = this.rooms[roomId]
     const user = new User(userId)
-    this.rooms[roomId].users.push(user)
+
+    roomIdFromRooms.users.push(user)
   },
 
   deleteUserRoom: function (roomId, userId) {
-    const filteredUsers = this.rooms[roomId].users.filter(({ id }) => id !== userId)
+    const roomIdFromRooms = this.rooms[roomId]
+    const filteredUsers = roomIdFromRooms.users.filter(({ id }) => id !== userId)
 
-    this.rooms[roomId].users = filteredUsers
+    roomIdFromRooms.users = filteredUsers
   },
 
   getUser: function (roomId, userId) {
-    if (this.rooms[roomId]) {
-      return this.rooms[roomId].users.find(({ id }) => id === userId)
+    const roomIdFromRooms = this.rooms[roomId]
+    if (roomIdFromRooms) {
+      return roomIdFromRooms.users.find(({ id }) => id === userId)
     }
   },
 
   getPreferencesAvailable(roomId) {
-    if (this.rooms[roomId]) {
-      const preferences = this.rooms[roomId].users.map(({ preference }) => preference)
-      const usedColors = preferences.map(({ color }) => color)
-      const usedTypes = preferences.map(({ type }) => type)
-      const color = this.rooms[roomId].preferences.color.filter((color) => !usedColors.includes(color))
-      const type = this.rooms[roomId].preferences.type.filter((type) => !usedTypes.includes(type))
+    const roomIdFromRooms = this.rooms[roomId]
 
-      return { color, type }
-    }
+    if (!roomIdFromRooms) return
+
+    const preferences = roomIdFromRooms.users.map(({ preference }) => preference)
+    const usedColors = preferences.map(({ color }) => color)
+    const usedTypes = preferences.map(({ type }) => type)
+    const color = roomIdFromRooms.preferences.color.filter((color) => !usedColors.includes(color))
+    const type = roomIdFromRooms.preferences.type.filter((type) => !usedTypes.includes(type))
+
+    return { color, type }
+    
   },
 
   updateUserPreferences(roomId, userId, newPreference) {
@@ -68,8 +77,10 @@ const roomsControllers = {
   },
 
   getGame: function (roomId) {
-    if (this.rooms[roomId]) {
-      return this.rooms[roomId].game
+    const roomIdFromRooms = this.rooms[roomId]
+
+    if (roomIdFromRooms) {
+      return roomIdFromRooms.game
     }
   }
 
