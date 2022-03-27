@@ -5,22 +5,24 @@ export function NewRoomModal({setRoomListVisible}) {
   const [ roomName, setRoomName ] = useState("")
   const [ maxPlayer, setMaxPlayer ] = useState(5)
 
-  function handleClick() {
-    async function createRoom() {
-      const res = await fetch("http://localhost:3000/rooms/new", { 
-        method: "POST",
-        body:JSON.stringify({
-          maxUsers:maxPlayer, 
-          roomName
-        })
+  async function handleClick() {
+    console.log(roomName)
+    console.log(maxPlayer)
+
+    const res = await fetch("http://localhost:3000/rooms/new",{
+      method: "POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        maxUsers:maxPlayer, 
+        roomName
       })
+    })
 
-      const roomId = await res.text()
-      
-      window.location.href = `./room/${roomId}`
-    }
-
-    createRoom()
+    const roomId = await res.text()
+    
+    window.location.href = `./room/${roomId}`
   }
 
   return (

@@ -1,5 +1,4 @@
 import { Room, User } from "../models/roomModels.js"
-// import { Game } from "../models/gameModels.js"
 
 const roomsControllers = {
   rooms: {},
@@ -13,21 +12,6 @@ const roomsControllers = {
     this.rooms[roomId] = newRoom
     
     return res.status(201).send(roomId)
-  },
-
-  delete: function (req, res) {
-    const idToDelete = req.body.roomId
-    delete this.rooms[idToDelete]
-  },
-
-  hasRoom: function (req, res) {
-    const { roomId } = req.params
-    
-    if (this.rooms[roomId]) {
-      return res.send({ exist: true })
-    } 
-
-    return res.send({ exist: false })
   },
 
   isEveryoneReady: function (roomId) {
