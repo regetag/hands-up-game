@@ -30,6 +30,15 @@ export const Container = styled.section`
     text-align: center;
     margin-bottom: 10px;
   }
+
+  .NewRoomModal--input-section{
+    display: flex;
+    flex-direction: column;
+
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
   button{
     display: block;
     margin: auto;

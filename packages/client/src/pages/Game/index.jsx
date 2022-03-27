@@ -1,4 +1,3 @@
-
 import { GameBoard } from "../../components/GameBoard"
 import { GameProvider } from "../../Contexts/GameContext"
 

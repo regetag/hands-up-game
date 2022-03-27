@@ -1,22 +1,21 @@
 import roomsController from "../controllers/roomsController.js"
-import { logger } from "../utils/logger.js"
 
-export default class SocketEvents{
+export default class SocketGameEvents{
   #io
+  #roomListIo
 
-  constructor(io){
+  constructor(io, roomListIo){
     this.#io = io
+    this.#roomListIo = roomListIo
   }
 
   listen(){
     this.#io.on("connection", (socket) => {
-      logger.info(Object.keys(roomsController.rooms))
-
+      
       Object.entries(this).forEach( ([key, value]) => {
         if (key.includes("socket")) value(socket)
       })
     })
-    
   }
 
   socketJoinRoom = socket => {
@@ -37,7 +36,8 @@ export default class SocketEvents{
       const preferences = roomsController.getPreferencesAvailable(roomId)
       this.#io.to(socket.id).emit("preferences", preferences)
         
-      return logger.info(this.#io.sockets.adapter.rooms.get(roomId))
+      this.#roomListIo.emit("room-list", roomsController.rooms)
+      // return logger.info(this.#io.sockets.adapter.rooms.get(roomId))
     })
   }
 
@@ -48,6 +48,7 @@ export default class SocketEvents{
       if (!roomId) return
 
       const game = roomsController.getGame(roomId)
+
       game.removePlayer(socket.id)
       this.#io.to(roomId).emit("players-update", game.players)
       roomsController.deleteUserRoom(roomId, socket.id)
@@ -59,6 +60,8 @@ export default class SocketEvents{
           break
         }
       }
+      
+      this.#roomListIo.emit("room-list", roomsController.rooms)
     })
   }
 
@@ -68,19 +71,22 @@ export default class SocketEvents{
       if(user){
         user.isReady = isReady
       }
+
       this.#io.to(roomId).emit("are-everyone-ready", roomsController.isEveryoneReady(roomId))
-      if (isReady) {
-        const game = roomsController.getGame(roomId)
-        const { color, type } = user.preference
-        game.addNewPlayer(socket.id, color, type)
+      
+      if (!isReady) return
+
+      const game = roomsController.getGame(roomId)
+      const { color, type } = user.preference
+      game.addNewPlayer(socket.id, color, type)
   
-        if (roomsController.isEveryoneReady(roomId)) {
-          this.#io.to(roomId).emit("stations", game.stations)
-          const players = game.players
-          const currentPlayer = players[game.currentPlayer].id
-          this.#io.to(roomId).emit("players-update", players, currentPlayer, game.thiefMovements, game.round, game.finishGame())
-        }
+      if (roomsController.isEveryoneReady(roomId)) {
+        this.#io.to(roomId).emit("stations", game.stations)
+        const players = game.players
+        const currentPlayer = players[game.currentPlayer].id
+        this.#io.to(roomId).emit("players-update", players, currentPlayer, game.thiefMovements, game.round, game.finishGame())
       }
+      
     })
   }
 
@@ -91,7 +97,6 @@ export default class SocketEvents{
       const preferences = roomsController.getPreferencesAvailable(roomId)
       this.#io.to(roomId).emit("preferences", preferences)
     })
-
   }
 
   socketPlayerChangePositon = socket => {

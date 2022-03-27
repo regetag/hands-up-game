@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from "react"
+import { createContext, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { io } from "socket.io-client"
 
@@ -6,6 +6,7 @@ import { io } from "socket.io-client"
 const GameContext = createContext()
 
 function GameProvider(props) {
+  
   const [me, setMe] = useState()
   const [round, setRound] = useState()
   const [socket, setSocket] = useState()
@@ -82,7 +83,6 @@ function GameProvider(props) {
       return () => { socket.off("preferences") }
     }
   }, [socket, currentPreferences])
-
 
   useEffect(() => {
     if (socket && currentPreferences) {

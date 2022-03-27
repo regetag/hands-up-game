@@ -1,14 +1,20 @@
 import { Game } from "./gameModels.js"
 
 export class Room {
-  constructor(maxUsers) {
-    this.maxUsers = maxUsers
+  constructor(maxUsers, roomId, roomName) {
+    this.maxUsers = maxUsers || 5
+    this.name = roomName || roomId
     this.users = []
     this.isReady = false
     this.preferences = {
       color: ["red", "green", "blue", "black", "yellow"],
-      type: ["police1", "police2", "police3", "police4", "thief"]
+      type: ["thief"]
     }
+
+    for(let i = 1; i < this.maxUsers; i++){
+      this.preferences.type.push("police" + i)
+    }
+    
     this.game = new Game()
   }
   static idGenerator() {

@@ -4,27 +4,31 @@ import { Room, User } from "../models/roomModels.js"
 const roomsControllers = {
   rooms: {},
   new: function (req, res) {
-    const { maxUsers } = req.body
-    const newRoom = new Room(maxUsers)
+    const { maxUsers, roomName } = req.body
+
     const roomId = Room.idGenerator()
+
+    const newRoom = new Room(maxUsers, roomId, roomName)
+    
     this.rooms[roomId] = newRoom
     
     return res.status(201).send(roomId)
   },
 
-  // delete: function (req, res) {
-  //   const idToDelete = req.body.roomId
-  //   delete this.rooms[idToDelete]
-  // },
+  delete: function (req, res) {
+    const idToDelete = req.body.roomId
+    delete this.rooms[idToDelete]
+  },
 
-  // hasRoom: function (req, res) {
-  //   const { roomId } = req.params
-  //   if (this.rooms[roomId]) {
-  //     res.send({ exist: true })
-  //   } else {
-  //     res.send({ exist: false })
-  //   }
-  // },
+  hasRoom: function (req, res) {
+    const { roomId } = req.params
+    
+    if (this.rooms[roomId]) {
+      return res.send({ exist: true })
+    } 
+
+    return res.send({ exist: false })
+  },
 
   isEveryoneReady: function (roomId) {
     const roomIdFromRooms = this.rooms[roomId]
