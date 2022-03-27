@@ -2,12 +2,19 @@ import { Room, User } from "../models/roomModels.js"
 
 const roomsControllers = {
   rooms: {},
+  roomsTimeOut:{
+    //Aqui sera salvo os timeOuts de 10 segundos para destruir um jogo caso não entre jogadores.
+  },
   new: function (req, res) {
     const { maxUsers, roomName } = req.body
 
     const roomId = Room.idGenerator()
 
     const newRoom = new Room(maxUsers, roomId, roomName)
+
+    this.roomsTimeOut[roomId] = setTimeout( () => {
+      delete this.rooms[roomId]
+    }, 1000 * 10) // 10 Segundos
     
     this.rooms[roomId] = newRoom
     
@@ -22,6 +29,9 @@ const roomsControllers = {
 
   addUserRoom: function (roomId, userId) {
     const roomIdFromRooms = this.rooms[roomId]
+    
+    if(this.roomsTimeOut[roomId]) clearTimeout(this.roomsTimeOut[roomId])
+
     const user = new User(userId)
 
     roomIdFromRooms.users.push(user)
