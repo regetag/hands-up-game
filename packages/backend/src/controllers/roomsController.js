@@ -1,24 +1,43 @@
 import { Room, User } from "../models/roomModels.js"
+import { logger } from "../utils/logger.js"
 
 const roomsControllers = {
   rooms: {},
   roomsTimeOut:{
     //Aqui sera salvo os timeOuts de 10 segundos para destruir um jogo caso não entre jogadores.
   },
+  roomsPassword:{},
   new: function (req, res) {
-    const { maxUsers, roomName } = req.body
+    const { maxUsers, roomName, password } = req.body
 
     const roomId = Room.idGenerator()
 
-    const newRoom = new Room(maxUsers, roomId, roomName)
+    const newRoom = new Room(maxUsers, roomId, roomName, !!password)
 
     this.roomsTimeOut[roomId] = setTimeout( () => {
       delete this.rooms[roomId]
     }, 1000 * 10) // 10 Segundos
+
+    if(password) this.roomsPassword[roomId] = password
     
     this.rooms[roomId] = newRoom
+
+    logger.info(`Room:${roomId} created with password:${password}`)
     
     return res.status(201).send(roomId)
+  },
+
+  checkPassword: function (req, res) {
+    const { roomId } = req.params
+    const { password } = req.body
+
+    const roomPassword = this.roomsPassword[roomId]
+
+    if(roomPassword !== password){
+      return res.status(400).send("Wrong password!")
+    }
+    
+    return res.sendStatus(200)
   },
 
   isEveryoneReady: function (roomId) {

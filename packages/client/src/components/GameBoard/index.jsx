@@ -1,4 +1,5 @@
 import { useContext } from "react"
+import { TryPasswordModal } from "../TryPasswordModal"
 import { ModalNewPlayer } from "../../components/ModalNewPlayer"
 import { GameContext } from "../../Contexts/GameContext"
 import { GameInteraction } from "../GameInteraction"
@@ -8,10 +9,17 @@ import { Container } from "./style"
 
 
 export function GameBoard() {
-  const { areEveryoneReady } = useContext(GameContext)
+  const { areEveryoneReady, authenticated, socket } = useContext(GameContext)
+
+  console.log(authenticated, socket)
+
   return (
     <Container>
-      {areEveryoneReady || <ModalNewPlayer />}
+      {
+        authenticated ?
+          areEveryoneReady || <ModalNewPlayer />:
+          <TryPasswordModal />
+      }
       <GameInteraction />
       <Canvas />
     </Container>

@@ -11,19 +11,47 @@ export default class SocketGameEvents{
 
   listen(){
     this.#io.on("connection", (socket) => {
+      const { roomId } = socket.handshake.auth
+
+      const doRoomIdExists = roomsController.rooms[roomId]
+      if(!doRoomIdExists) return socket.disconnect()
+
+      const roomHavePassword = roomsController.rooms[roomId].password
+
+      socket.emit("have-password", roomHavePassword)
       
-      Object.entries(this).forEach( ([key, value]) => {
-        if (key.includes("socket")) value(socket)
-      })
+      if(!roomHavePassword){
+        return this.#appendAllSocketEvents(socket)
+      }
+      
+      this.#tryRoomPassword(socket)
     })
+  }
+
+  #appendAllSocketEvents(socket){
+    Object.entries(this).forEach( ([key, value]) => {
+      if (key.includes("socket")) value(socket)
+    })
+  }
+
+  #tryRoomPassword(socket){
+    const { roomId, password:socketTryPasswod } = socket.handshake.auth
+
+    const roomPassword = roomsController.roomsPassword[roomId]
+
+    if( roomPassword !== socketTryPasswod){
+      return socket.disconnect()
+    }
+
+    this.#appendAllSocketEvents(socket)
   }
 
   socketJoinRoom = socket => {
     socket.on("join-room", (roomId, callback) => {
       const currentRoom = roomsController.rooms[roomId]
-      
-      if (!currentRoom) return callback({ err: "Room not find" })
 
+      if (!currentRoom) return callback({ err: "Room not find" })
+      
       const maxUsers = currentRoom.maxUsers
         
       if (currentRoom.users.length >= maxUsers) {

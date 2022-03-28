@@ -2,10 +2,9 @@ import { createContext, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { io } from "socket.io-client"
 
-
 const GameContext = createContext()
 
-function GameProvider(props) {
+function GameProvider({ children, password }) {
   
   const [me, setMe] = useState()
   const [round, setRound] = useState()
@@ -20,11 +19,25 @@ function GameProvider(props) {
   const [currentPreferences, setCurrentPreferences] = useState()
   const [areEveryoneReady, setareEveryoneReady] = useState(false)
   const [colorsAndTypesAvailable, setColorsAndTypesAvailable] = useState()
+  
+  const [authenticated, setAuthenticated] = useState(false)
 
   useEffect(() => {
-    const connection = io("localhost:3000/")
-    connection.on("connect", () => {
-      setSocket(connection)
+    const connection = io("localhost:3000/", {
+      auth:{
+        roomId: room,
+        password
+      }
+    })
+
+    connection.on("have-password", (havePassword) => {
+      console.log({havePassword}, {password})
+      if(password || !havePassword){
+        setSocket(connection)
+        return setAuthenticated(true)
+      }
+      
+      return setAuthenticated(false)
     })
   }, [])
 
@@ -114,12 +127,15 @@ function GameProvider(props) {
     round,
     thiefMovements,
     setCurrentPreferences,
-    currentPreferences
+    currentPreferences,
+    authenticated,
+    setSocket,
+    setAuthenticated,
   }
 
   return (
     <GameContext.Provider value={values}>
-      {props.children}
+      {children}
     </GameContext.Provider>
   )
 }

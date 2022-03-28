@@ -1,11 +1,12 @@
 import { Game } from "./gameModels.js"
 
 export class Room {
-  constructor(maxUsers, roomId, roomName) {
+  constructor(maxUsers, roomId, roomName, hasPassword) {
     this.maxUsers = maxUsers || 5
     this.name = roomName || roomId
     this.users = []
     this.isReady = false
+    this.password = hasPassword
     this.preferences = {
       color: ["red", "green", "blue", "black", "yellow"],
       type: ["thief"]

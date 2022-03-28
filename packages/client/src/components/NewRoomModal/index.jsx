@@ -1,28 +1,40 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
+import { PasswordContext } from "../../Contexts/PasswordContext"
 import { Container } from "./style"
+import { useNavigate } from "react-router-dom"
 
 export function NewRoomModal({setRoomListVisible}) {
+  const navigate = useNavigate()
+
+  const { setContextPassword } = useContext(PasswordContext)
+
   const [ roomName, setRoomName ] = useState("")
   const [ maxPlayer, setMaxPlayer ] = useState(5)
+  const [ passwordCheckBox, setPasswordCheckBox ] = useState(false)
+  const [ password, setPassword ] = useState("")
 
   async function handleClick() {
-    console.log(roomName)
-    console.log(maxPlayer)
+    const body = {
+      maxUsers:maxPlayer, 
+      roomName,
+    }
+    
+    if(passwordCheckBox){
+      setContextPassword(password)
+      body.password = password
+    }
 
     const res = await fetch("http://localhost:3000/rooms/new",{
       method: "POST",
       headers:{
         "Content-Type":"application/json"
       },
-      body:JSON.stringify({
-        maxUsers:maxPlayer, 
-        roomName
-      })
+      body:JSON.stringify(body)
     })
 
     const roomId = await res.text()
     
-    window.location.href = `./room/${roomId}`
+    navigate(`/room/${roomId}`)
   }
 
   return (
@@ -39,13 +51,32 @@ export function NewRoomModal({setRoomListVisible}) {
           />
         </div>
         <div>
-          <p>maximo de jogadores:</p>
+          <p>Maximo de jogadores:</p>
 
           <input 
             type="number"
             placeholder="Maximo de jogadores"
             onChange={e => setMaxPlayer(e.target.value)}
           />
+        </div>
+        <div>
+          <p>Senha:</p>
+          <input onChange={() => setPasswordCheckBox( passwordCheckBox ? false: true )} type="checkbox"/>
+
+          {
+            passwordCheckBox ? 
+              <input 
+                type="text"
+                placeholder="senha"
+                onChange={e => setPassword(e.target.value)}
+              /> :
+              <input 
+                disabled
+                type="text"
+                placeholder="senha"
+                onChange={e => setPassword(e.target.value)}
+              />
+          }
         </div>
       </section>
       <section>
