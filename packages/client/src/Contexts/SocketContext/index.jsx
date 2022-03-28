@@ -13,6 +13,10 @@ export function SocketProvider({children}){
 
     connection.on("connect", () => setSocket(connection))
     connection.on("room-list", list => setRoomList(list))
+
+    return function(){
+      connection.disconnect()
+    }
   }, [])
 
   const values = {

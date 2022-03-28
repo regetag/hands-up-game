@@ -7,11 +7,8 @@ import { Canvas } from "../Canvas"
 import { Container } from "./style"
 
 
-
 export function GameBoard() {
-  const { areEveryoneReady, authenticated, socket } = useContext(GameContext)
-
-  console.log(authenticated, socket)
+  const { areEveryoneReady, authenticated } = useContext(GameContext)
 
   return (
     <Container>

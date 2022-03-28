@@ -22,6 +22,9 @@ export function RoomLi({data}){
         </small>
       </div>
 
+      {data.password && <img src="/assets/images/lock.svg" alt="lock image" /> }
+      
+
       {
         isFullRoom ? (
           <button

@@ -33,7 +33,7 @@ export function NewRoomModal({setRoomListVisible}) {
     })
 
     const roomId = await res.text()
-    
+  
     navigate(`/room/${roomId}`)
   }
 

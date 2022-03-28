@@ -17,6 +17,7 @@ export function RoomList({setRoomListVisible}){
       currentRoom.name = value.name
       currentRoom.maxPlayers = value.maxUsers
       currentRoom.currentPlayersAmount = value.users.length
+      currentRoom.password = value.password
 
       rooms.push(currentRoom)
     })

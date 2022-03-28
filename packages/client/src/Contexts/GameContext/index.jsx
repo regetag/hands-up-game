@@ -31,7 +31,6 @@ function GameProvider({ children, password }) {
     })
 
     connection.on("have-password", (havePassword) => {
-      console.log({havePassword}, {password})
       if(password || !havePassword){
         setSocket(connection)
         return setAuthenticated(true)
@@ -39,6 +38,11 @@ function GameProvider({ children, password }) {
       
       return setAuthenticated(false)
     })
+
+    return function(){
+      connection.disconnect()
+      setSocket(undefined)
+    }
   }, [])
 
   useEffect(() => {

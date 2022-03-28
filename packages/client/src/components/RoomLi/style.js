@@ -6,4 +6,9 @@ export const Container = styled.li`
   justify-content: space-between;
 
   width: 400px;
+  height: 40px;
+
+  img{
+    height: 100%;
+  }
 `
