@@ -1,24 +1,19 @@
 {
-  "name": "policia_e_ladrao",
-  "version": "1.0.0",
+  "name": "hands-up-game",
+  "version": "2.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "start_client": "npm start --prefix client",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon .",
-    "start": "node index.js",
-    "postinstall": "npm install --prefix client"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/regetag/hands-up-game.git"
+  },
+  "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "cors": "^2.8.5",
-    "dotenv": "^10.0.0",
-    "express": "^4.17.2",
-    "socket.io": "^4.4.0"
+  "bugs": {
+    "url": "https://github.com/regetag/hands-up-game/issues"
   },
-  "devDependencies": {
-    "nodemon": "^2.0.15"
-  }
+  "homepage": "https://github.com/regetag/hands-up-game#readme"
 }
