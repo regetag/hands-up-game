@@ -1,7 +1,7 @@
 import { useContext } from "react"
 import { PasswordContext } from "../../Contexts/PasswordContext"
 
-import { GameBoard } from "../../components/GameBoard"
+import { GameBoard } from "../../components/molecule/GameBoard"
 import { GameProvider } from "../../Contexts/GameContext"
 
 export function Game() {

@@ -2,8 +2,8 @@ import { useState, useEffect, useContext } from "react"
 import { SocketProvider } from "../../Contexts/SocketContext"
 // import { CarAnimation } from "../../components/CarAnimation"
 import { PasswordContext } from "../../Contexts/PasswordContext"
-import { NewRoomModal } from "../../components/NewRoomModal"
-import { RoomList } from "../../components/RoomListModal"
+import { NewRoomModal } from "../../components/molecule/NewRoomModal"
+import { RoomList } from "../../components/molecule/RoomListModal"
 import { Container } from "./style"
 
 
