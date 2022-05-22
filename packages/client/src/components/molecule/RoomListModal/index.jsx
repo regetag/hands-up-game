@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react"
 import { SocketContext } from "../../../Contexts/SocketContext"
 import { Container } from "./styles"
 import { RoomLi } from "../../atom/RoomLi"
+import { PoliceButton } from "../../atom/PoliceButton"
 
 export function RoomList({setRoomListVisible}){
   const { roomList } = useContext(SocketContext)
@@ -11,13 +12,13 @@ export function RoomList({setRoomListVisible}){
     const rooms = []
 
     Object.entries(roomList).forEach( ([key, value]) => {
-      const currentRoom = {}
-
-      currentRoom.id = key
-      currentRoom.name = value.name
-      currentRoom.maxPlayers = value.maxUsers
-      currentRoom.currentPlayersAmount = value.users.length
-      currentRoom.password = value.password
+      const currentRoom = {
+        id: key,
+        name: value.name,
+        maxPlayers: value.maxUsers,
+        currentPlayersAmount: value.users.length,
+        password: value.password,
+      }
 
       rooms.push(currentRoom)
     })
@@ -27,14 +28,19 @@ export function RoomList({setRoomListVisible}){
 
   return(
     <Container>
-      <ul>
-        {
-          roomData.length > 0 && roomData.map( (data, i) => <RoomLi key={i} data={data} />) 
-        }
-      </ul>
-      <button onClick={() => setRoomListVisible(false)}>
-        Criar Sala
-      </button>
+      <div>
+        
+        <ul>
+          {
+            roomData.length > 0 && roomData.map( (data, i) => <RoomLi key={i} data={data} />) 
+          }
+        </ul>
+
+        <PoliceButton onClick={() => setRoomListVisible(false)}>
+          Criar Sala
+        </PoliceButton>
+
+      </div>
     </Container>
   )
 }

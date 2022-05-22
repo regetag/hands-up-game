@@ -3,7 +3,6 @@ import { Container } from "./style"
 import { GameContext } from "../../../Contexts/GameContext"
 import { ThiefHistoric } from "../../atom/ThiefHistoric"
 import backgroundCanvas from "../../../assets/images/game-board.jpg"
-import ambienceSound from "../../../assets/sounds/ambience0.mp3"
 import policeBeep from "../../../assets/sounds/police_beep.mp3"
 
 CanvasRenderingContext2D.prototype.roundRect = function (x, y, width, height, radius) {
@@ -33,15 +32,6 @@ export function Canvas(props) {
       setCanvasImage(image)
     }
     
-
-    const audio = new Audio()
-
-    audio.src = ambienceSound
-
-    audio.play()
-    audio.loop = true
-    audio.volume = .4
-
   }, [])
 
   useEffect(() => {

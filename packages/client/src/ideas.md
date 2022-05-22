@@ -1,0 +1,1 @@
+A cada rodada o policial tem 2% de receber a skill X9, ela deixa visivel o ladrao por 1 rodada

@@ -2,6 +2,7 @@ import { useState, useContext } from "react"
 import { PasswordContext } from "../../../Contexts/PasswordContext"
 import { Container } from "./style"
 import { useNavigate } from "react-router-dom"
+import { PoliceButton } from "../../atom/PoliceButton"
 
 export function NewRoomModal({setRoomListVisible}) {
   const navigate = useNavigate()
@@ -80,8 +81,8 @@ export function NewRoomModal({setRoomListVisible}) {
         </div>
       </section>
       <section>
-        <button onClick={() => setRoomListVisible(true)}>Voltar</button>
-        <button onClick={handleClick}>Criar nova sala</button>
+        <PoliceButton onClick={() => setRoomListVisible(true)}>Voltar</PoliceButton>
+        <PoliceButton onClick={handleClick}>Criar nova sala</PoliceButton>
       </section>
     </Container>
   )

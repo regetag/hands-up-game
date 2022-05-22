@@ -6,26 +6,28 @@ const GameContext = createContext()
 
 function GameProvider({ children, password }) {
   
-  const [me, setMe] = useState()
-  const [round, setRound] = useState()
-  const [socket, setSocket] = useState()
-  const [players, setPlayers] = useState()
-  const [stations, setStations] = useState()
-  const [room] = useState(useParams().roomId)
-  const [canIPlay, setCanIPlay] = useState(false)
-  const [amIReady, setAmIReady] = useState(false)
-  const [currentVehicle, setCurrentVehicle] = useState()
-  const [thiefMovements, setThiefMovements] = useState([])
-  const [currentPreferences, setCurrentPreferences] = useState()
-  const [areEveryoneReady, setareEveryoneReady] = useState(false)
-  const [colorsAndTypesAvailable, setColorsAndTypesAvailable] = useState()
-  
+  const [ me, setMe ] = useState()
+  const [ round, setRound ] = useState()
+  const [ socket, setSocket ] = useState()
+  const [ players, setPlayers ] = useState()
+  const [ stations, setStations ] = useState()
+  const [ canIPlay, setCanIPlay ] = useState(false)
+  const [ amIReady, setAmIReady ] = useState(false)
+  const [ currentVehicle, setCurrentVehicle ] = useState()
+  const [ thiefMovements, setThiefMovements ] = useState([])
+  const [ currentPreferences, setCurrentPreferences ] = useState()
+  const [ areEveryoneReady, setareEveryoneReady ] = useState(false)
+  const [ colorsAndTypesAvailable, setColorsAndTypesAvailable ] = useState()
   const [authenticated, setAuthenticated] = useState(false)
+
+
+  const roomId = useParams().roomId
+
 
   useEffect(() => {
     const connection = io("localhost:3000/", {
       auth:{
-        roomId: room,
+        roomId,
         password
       }
     })
@@ -47,7 +49,7 @@ function GameProvider({ children, password }) {
 
   useEffect(() => {
     if (socket) {
-      socket.emit("join-room", room, (err) => {
+      socket.emit("join-room", roomId, (err) => {
         if (err) {
           window.location.href = "/"
         }
@@ -68,9 +70,10 @@ function GameProvider({ children, password }) {
         if (!me) {
           setMe(players.find(({ id }) => id === socket.id))
         }
+        
         if (endGame) {
           alert(endGame)
-          socket.emit("restart", room)
+          socket.emit("restart", roomId)
           setAmIReady(false)
         }
 
@@ -80,7 +83,7 @@ function GameProvider({ children, password }) {
         setCanIPlay(myTurn)
       })
     }
-  }, [socket, room])
+  }, [socket, roomId])
 
   useEffect(() => {
     if (socket) {
@@ -103,19 +106,19 @@ function GameProvider({ children, password }) {
 
   useEffect(() => {
     if (socket && currentPreferences) {
-      socket.emit("player-change-preferences", room, currentPreferences)
+      socket.emit("player-change-preferences", roomId, currentPreferences)
     }
   }, [socket, currentPreferences])
 
   useEffect(() => {
     if (socket) {
-      socket.emit("am-i-ready", room, amIReady)
+      socket.emit("am-i-ready", roomId, amIReady)
     }
-  }, [room, amIReady])
+  }, [roomId, amIReady])
 
   const values = {
     socket,
-    room,
+    room: roomId,
     colorsAndTypesAvailable,
     setColorsAndTypesAvailable,
     amIReady,

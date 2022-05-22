@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react"
 import { SocketProvider } from "../../Contexts/SocketContext"
-// import { CarAnimation } from "../../components/CarAnimation"
+import { CarAnimation } from "../../components/atom/CarAnimation"
 import { PasswordContext } from "../../Contexts/PasswordContext"
 import { NewRoomModal } from "../../components/molecule/NewRoomModal"
 import { RoomList } from "../../components/molecule/RoomListModal"
@@ -25,8 +25,8 @@ export function Home() {
             <NewRoomModal setRoomListVisible={setRoomListVisible} />
         }
       
-        {/* <CarAnimation /> */}
       </SocketProvider>
+      <CarAnimation />
     </Container>
   )
 }
